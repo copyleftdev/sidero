@@ -2,8 +2,11 @@
 
 ![Sidero Mascot](media/image.png)
 
-
 > **"Iron-Clad Security for the Modern Stack."**
+
+[![Rust](https://img.shields.io/badge/built_with-Rust-dca282.svg)](https://www.rust-lang.org/)
+[![MCP](https://img.shields.io/badge/MCP-Compatible-green)](https://modelcontextprotocol.io)
+[![Status](https://img.shields.io/badge/Status-Verified-blue)](https://github.com/copyleftdev/sidero)
 
 **Sidero** (Greek: *Iron*) is a blazing-fast, Rust-based Model Context Protocol (MCP) server for [Semgrep](https://semgrep.dev). It acts as a lightweight, memory-safe, and asynchronous bridge between your LLM workspace (Claude, Cursor, etc.) and the powerful Semgrep static analysis engine.
 
@@ -30,7 +33,7 @@ Unlike existing wrappers, Sidero is built for speed (`tokio`), correctness, and 
 
 ### Build
 ```bash
-git clone https://github.com/yourusername/sidero
+git clone https://github.com/copyleftdev/sidero
 cd sidero
 cargo build --release
 ```
@@ -72,6 +75,16 @@ Once connected, your LLM will have access to these tools:
 *   *"Scan `src/main.rs` for security vulnerabilities using the default ruleset."*
 *   *"Write a Semgrep rule to detect `unwrap()` calls in Rust and run it on this file."*
 *   *"Show me the critical vulnerabilities from my dashboard."*
+
+## 🧪 Advanced Usage (JSON-RPC)
+
+You can interact with Sidero directly via standard input if you are building your own client or debugging.
+
+**Note:** When sending multi-line rules via JSON, ensure proper escaping of newlines (`\n`).
+
+```bash
+echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "semgrep_scan_with_custom_rule", "arguments": {"code_files": ["app.js"], "rule": "rules:\n  - id: test-eval\n    patterns:\n      - pattern: eval(...)\n    message: \"Eval found!\"\n    languages: [javascript]\n    severity: ERROR"}}}' | ./target/release/sidero
+```
 
 ## 🏗️ Architecture
 
