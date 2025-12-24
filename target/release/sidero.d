@@ -1,0 +1,1 @@
+/home/ops/Project/semgrep/sidero/target/release/sidero: /home/ops/Project/semgrep/sidero/src/api_client.rs /home/ops/Project/semgrep/sidero/src/handler.rs /home/ops/Project/semgrep/sidero/src/main.rs /home/ops/Project/semgrep/sidero/src/protocol.rs /home/ops/Project/semgrep/sidero/src/semgrep_wrapper.rs
