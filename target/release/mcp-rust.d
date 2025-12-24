@@ -1,1 +1,0 @@
-/home/ops/Project/semgrep/mcp-rust/target/release/mcp-rust: /home/ops/Project/semgrep/mcp-rust/src/api_client.rs /home/ops/Project/semgrep/mcp-rust/src/handler.rs /home/ops/Project/semgrep/mcp-rust/src/main.rs /home/ops/Project/semgrep/mcp-rust/src/protocol.rs /home/ops/Project/semgrep/mcp-rust/src/semgrep_wrapper.rs
