@@ -1,0 +1,8 @@
+startCommand:
+  type: stdio
+  command: sidero
+  args: []
+  config:
+    SEMGREP_APP_TOKEN:
+      description: "Your Semgrep App Token (Required for finding findings)"
+      required: false
