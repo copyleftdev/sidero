@@ -9,10 +9,8 @@ impl ApiClient {
     pub async fn get_findings(token: &str, params: serde_json::Map<String, Value>) -> Result<Value> {
         let client = Client::new();
         
-        // 1. Get deployment slug
         let slug = Self::get_deployment_slug(&client, token).await?;
         
-        // 2. Fetch findings
         let url = format!("https://semgrep.dev/api/v1/deployments/{}/findings", slug);
         
         let response = client

@@ -19,11 +19,6 @@ impl SemgrepWrapper {
     }
 
     pub async fn get_supported_languages() -> Result<Vec<String>> {
-        // semgrep show supported-languages --json would be ideal, but let's check what works.
-        // The existing python code used: semgrep show supported-languages --experimental
-        // Let's stick to parsing the list if it's simple/newline separated.
-        
-        // Actually, checking standard output, `semgrep show supported-languages` usually prints a list.
         let output = Command::new("semgrep")
             .args(["show", "supported-languages"])
             .output()
@@ -44,7 +39,7 @@ impl SemgrepWrapper {
         let mut cmd = Command::new("semgrep");
         cmd.arg("scan")
            .arg("--json")
-           .arg("--experimental"); // Following python implementation
+           .arg("--experimental");
         
         if let Some(cfg) = config {
             cmd.arg("--config").arg(cfg);
@@ -74,7 +69,6 @@ impl SemgrepWrapper {
     }
 
     pub async fn scan_with_custom_rule(rule_content: String, code_files: Vec<String>) -> Result<Value> {
-        // 1. Write rule to temp file
         let rule_file = NamedTempFile::new().context("Failed to create temp rule file")?;
         let rule_path = rule_file.path().to_str().unwrap().to_string();
         
@@ -82,8 +76,6 @@ impl SemgrepWrapper {
         // For simplicity and since NamedTempFile is sync, we use std::fs
         std::fs::write(&rule_path, rule_content).context("Failed to write rule content")?;
 
-        // 2. Scan
-        // We reuse the scan method logic but explicitly here to handle the temporary nature
         let mut cmd = Command::new("semgrep");
         cmd.arg("scan")
            .arg("--json")
@@ -96,9 +88,6 @@ impl SemgrepWrapper {
         }
 
         let output = cmd.output().await.context("Failed to execute semgrep scan")?;
-        
-        // 3. Cleanup handled by NamedTempFile drop, but we need to ensure we don't return early without drop if we did manual cleanup
-        // NamedTempFile cleans up on drop automatically.
 
         if !output.status.success() {
              if output.stdout.is_empty() {
@@ -114,12 +103,10 @@ impl SemgrepWrapper {
     }
 
     pub async fn dump_ast(code: String, language: String) -> Result<Value> {
-         // 1. Write code to temp file
         let code_file = NamedTempFile::new().context("Failed to create temp code file")?;
         let code_path = code_file.path().to_str().unwrap().to_string();
         std::fs::write(&code_path, code).context("Failed to write code content")?;
 
-        // 2. Run dump-ast
         let output = Command::new("semgrep")
             .arg("--dump-ast")
             .arg("--json")

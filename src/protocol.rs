@@ -125,7 +125,6 @@ pub struct CallToolResult {
 pub enum Content {
     #[serde(rename = "text")]
     Text { text: String },
-    // We can add Image/Resource types later if needed
 }
 
 // Prompts

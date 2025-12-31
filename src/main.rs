@@ -13,7 +13,6 @@ use handler::Handler;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    // We can add args like --port later for HTTP support
 }
 
 #[tokio::main]
@@ -39,7 +38,7 @@ async fn main() -> Result<()> {
         line.clear();
         let bytes_read = reader.read_line(&mut line).await?;
         if bytes_read == 0 {
-            break; // EOF
+            break;
         }
 
         let trimmed = line.trim();
@@ -72,19 +71,16 @@ async fn main() -> Result<()> {
                         }
                     }
                     JsonRpcMessage::Notification(notif) => {
-                        // Handle notifications (no response needed)
                         if notif.method == "notifications/initialized" {
                             info!("Client initialized notification received");
                         }
                     }
                      _ => {
-                        // Ignore responses or errors sent TO the server for now
                     }
                 }
             }
             Err(e) => {
                 error!("Failed to parse JSON: {}", e);
-                // Send parse error
                  let response = JsonRpcMessage::Error(JsonRpcErrorResponse {
                     jsonrpc: "2.0".to_string(),
                     id: None,
